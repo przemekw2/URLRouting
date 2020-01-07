@@ -33,7 +33,26 @@ namespace webapp
             app.UseStatusCodePages();
             app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
-            app.UseMvc();
+            app.UseMvc(routes => {
+
+                routes.MapRoute(name: "MyRoute",
+                    template: "{controller=Home}/{action=Index}/{id=DefaultId}");
+
+                //routes.MapRoute(name: "ShopSchema",
+                //template: "Shop/{action}",
+                //defaults: new { controller = "Home", action = "Index" });
+
+                //routes.MapRoute("", "X{controller}/{action}");
+
+                //routes.MapRoute(
+                //name: "default",
+                //template: "{controller=Home}/{action=Index}");
+
+                //routes.MapRoute(name: "",
+                //template: "Public/{controller=Home}/{action=Index}");
+
+            });
+            //app.UseMvc();
             // app.UseEndpoints(endpoints =>
             // {
             //     endpoints.MapControllers();
