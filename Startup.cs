@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Routing.Constraints;
+using webapp.Infrastructure;
+using Microsoft.AspNetCore.Routing;
 
 namespace webapp
 {
@@ -23,6 +26,8 @@ namespace webapp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<RouteOptions>(options =>
+                options.ConstraintMap.Add("weekday", typeof(WeekDayConstraint)));
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddControllersWithViews();
         }
@@ -33,10 +38,27 @@ namespace webapp
             app.UseStatusCodePages();
             app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
-            app.UseMvc(routes => {
+            app.UseMvcWithDefaultRoute();
+            // app.UseMvc(routes => {
+                // routes.MapRoute(name: "MyRoute",
+                //         template: "{controller=Home}/{action=Index}/{id:weekday?}");
+                    //template: "{controller}/{action}/{id?}",
+                    //defaults: new { controller = "Home", action = "Index" },
+                    //constraints: new { id = new WeekDayConstraint() });
 
-                routes.MapRoute(name: "MyRoute",
-                    template: "{controller=Home}/{action=Index}/{id=DefaultId}");
+            
+            //app.UseMvc(routes => {
+
+                // routes.MapRoute(name: "MyRoute",
+                //     template: "{controller=Home}/{action=Index}" 
+                //         + "/{id:alpha:minlength(6)?}");
+                    //template: "{controller=Home}/{action=Index}/{id:range(10,20)?}");
+                    // template: "{controller:regex(^H.*)=Home}/"
+                    //     + "{action:regex(^Index$|^About$)=Index}/{id?}");
+                    // template: "{controller}/{action}/{id?}",
+                    // defaults: new { controller = "Home", action = "Index" },
+                    // constraints: new { id = new IntRouteConstraint() });
+                //     template: "{controller=Home}/{action=Index}/{id:int?}/{*catchall}");
 
                 //routes.MapRoute(name: "ShopSchema",
                 //template: "Shop/{action}",
@@ -51,7 +73,8 @@ namespace webapp
                 //routes.MapRoute(name: "",
                 //template: "Public/{controller=Home}/{action=Index}");
 
-            });
+            // });
+
             //app.UseMvc();
             // app.UseEndpoints(endpoints =>
             // {

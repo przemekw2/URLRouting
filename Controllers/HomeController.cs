@@ -17,14 +17,15 @@ namespace webapp.Controllers
                 Action = nameof(Index)
             });
 
-        public ViewResult CustomVariable()
+        public ViewResult CustomVariable(string id)
         {
             Result r = new Result
             {
                 Controller = nameof(HomeController),
                 Action = nameof(CustomVariable),
             };
-            r.Data["id"] = RouteData.Values["id"];
+            r.Data["id"] = id ?? "<no value>";
+            r.Data["catchall"] = RouteData.Values["catchall"];
             return View("Result", r);
         }
 
