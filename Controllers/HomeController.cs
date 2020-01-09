@@ -25,7 +25,8 @@ namespace webapp.Controllers
                 Action = nameof(CustomVariable),
             };
             r.Data["id"] = id ?? "<no value>";
-            r.Data["catchall"] = RouteData.Values["catchall"];
+            r.Data["url"] = Url.Action("CustomVariable", "Home", new { id = 100 });
+            //r.Data["catchall"] = RouteData.Values["catchall"];
             return View("Result", r);
         }
 
